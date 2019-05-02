@@ -1,0 +1,31 @@
+# ----------------------------------------
+# All Web Site Data
+# Ecommerce Overview
+# 20181001-20190429
+# ----------------------------------------
+
+Month Index,Date Range,Segment,Revenue,Ecommerce Conversion Rate
+0000,"Oct 1, 2018 - Apr 29, 2019",All Users,"$1,443.88",0.52%
+0000,"Oct 1, 2018 - Apr 29, 2019",New Users,$643.96,0.27%
+0000,"Oct 1, 2018 - Apr 29, 2019",Returning Users,$799.92,0.96%
+0001,"Oct 1, 2018 - Apr 29, 2019",All Users,"$4,047.68",1.32%
+0001,"Oct 1, 2018 - Apr 29, 2019",New Users,"$1,540.60",0.58%
+0001,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$2,507.08",2.78%
+0002,"Oct 1, 2018 - Apr 29, 2019",All Users,"$3,542.83",0.83%
+0002,"Oct 1, 2018 - Apr 29, 2019",New Users,"$2,171.83",0.55%
+0002,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$1,371.00",1.43%
+0003,"Oct 1, 2018 - Apr 29, 2019",All Users,"$1,831.48",0.80%
+0003,"Oct 1, 2018 - Apr 29, 2019",New Users,$470.68,0.47%
+0003,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$1,360.80",1.32%
+0004,"Oct 1, 2018 - Apr 29, 2019",All Users,"$4,251.30",0.79%
+0004,"Oct 1, 2018 - Apr 29, 2019",New Users,"$3,404.34",0.61%
+0004,"Oct 1, 2018 - Apr 29, 2019",Returning Users,$846.96,1.06%
+0005,"Oct 1, 2018 - Apr 29, 2019",All Users,"$2,639.06",1.21%
+0005,"Oct 1, 2018 - Apr 29, 2019",New Users,$231.88,0.17%
+0005,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$2,407.18",3.02%
+0006,"Oct 1, 2018 - Apr 29, 2019",All Users,"$2,807.72",1.00%
+0006,"Oct 1, 2018 - Apr 29, 2019",New Users,"$1,497.80",0.72%
+0006,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$1,309.92",1.46%
+,"Oct 1, 2018 - Apr 29, 2019",All Users,"$20,563.95",0.92%
+,"Oct 1, 2018 - Apr 29, 2019",New Users,"$9,961.09",0.48%
+,"Oct 1, 2018 - Apr 29, 2019",Returning Users,"$10,602.86",1.70%
