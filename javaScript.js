@@ -11,7 +11,9 @@ Promise.all([dataP, mapP]).then(function(values){
   // console.log("calc", calc(data));
   drawMap(mapData, data);
 
-  drawRevPer(0, data)
+  drawRevPer(0, data);
+  drawRevMobile(0, data);
+  drawRevDesk(0, data);
 
 });
 
@@ -77,6 +79,8 @@ return allUsersConv;
 var clicked = function(state, data) {
   // console.log("state", state)
   drawRevPer(state, data);
+  drawRevMobile(state, data);
+  drawRevDesk(state, data);
 
 }
 
@@ -96,7 +100,7 @@ var dataToRevPer = function(d){
 // console.log(dist)
 return dist;}
 
-var checkColor = function(d, state, data){
+var checkColorTot = function(d, state, data){
   // console.log("d", d, "state", state, "data", data)
   if (state != 0){
     var name = state.properties.name;
@@ -125,8 +129,8 @@ var checkColor = function(d, state, data){
 var drawRevPer = function(state, data){
     // console.log("state", state)
     revPer = dataToRevPer(data);
-    var svgwidth = 400;
-    var svgheight = 300;
+    var svgwidth = 500;
+    var svgheight = 350;
     var svg = d3.select('body').select('div').select('svg').attr('width',svgwidth).attr('height',svgheight);
     var margins =
     {
@@ -196,7 +200,7 @@ var drawRevPer = function(state, data){
               .attr("height", function(d){return height - yScale(percentage(d));})
               .attr("fill", function(d){
                 // console.log("big d", d)
-                return checkColor(d, state, data);
+                return checkColorTot(d, state, data);
               })
 
     var xAxis = d3.axisBottom(xScale);
@@ -238,12 +242,6 @@ var color = function(name, data){
     else{return d3.rgb("#294128");}
   }}
 
-
-
-var revenuePer = function(map, data){
-
-
-}
 
 
 
@@ -292,7 +290,7 @@ var states = svg.append("g")
                  .attr("x",mouseX)
                  .attr("y",mouseY)
                  .attr("width",275)
-                 .attr("height",200)
+                 .attr("height",125)
                  .style("fill","#EDF0EC")
              svg.append('g').append('text')
                 .attr("id","tooltipT01")
@@ -456,12 +454,12 @@ var states = svg.append("g")
     }
 
 
-    var draw = function(state, data){
+    var drawRevMobile = function(state, data){
         // console.log("state", state)
-        revPer = dataToRevPer(data);
-        var svgwidth = 400;
-        var svgheight = 300;
-        var svg = d3.select('body').select('div').select('svg').attr('width',svgwidth).attr('height',svgheight);
+        revPer = dataToRevMob(data);
+        var svgwidth = 500;
+        var svgheight = 350;
+        var svg = d3.select('body').select('.mob').select('svg').attr('width',svgwidth).attr('height',svgheight);
         var margins =
         {
           top:20,
@@ -530,7 +528,7 @@ var states = svg.append("g")
                   .attr("height", function(d){return height - yScale(percentage(d));})
                   .attr("fill", function(d){
                     // console.log("big d", d)
-                    return checkColor(d, state, data);
+                    return checkColorMob(d, state, data);
                   })
 
         var xAxis = d3.axisBottom(xScale);
@@ -546,5 +544,182 @@ var states = svg.append("g")
         svg.append("text")
             .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
             .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
-            .text("Revenue/User");
+            .text("Revenue/User (Mobile)");
+    }
+
+    var dataToRevMob = function(d){
+      dist = []
+      for(var key in d) {
+        var value = d[key];
+        var revenue = value[6]
+        revenue = revenue.replace("$", "")
+        revenue = revenue.replace(",", "")
+        var users = value[5]
+        users = users.replace(",", "")
+        // console.log("rev:", revenue, "users:", users)
+        var revPer = revenue / users;
+        dist.push(revPer)
+    }
+    // console.log(dist)
+    return dist;}
+
+    var checkColorMob = function(d, state, data){
+      // console.log("d", d, "state", state, "data", data)
+      if (state != 0){
+        var name = state.properties.name;
+        var value = data[name];
+        var rev = value[6];
+        rev = rev.replace("$", "")
+        rev = rev.replace(",", "")
+        var user = value[5];
+        user = user.replace(",", "")
+        revPer = rev / user;
+        // console.log("d[0]", d, "revPer", revPer)
+        // console.log("RevPERERE", d.includes(revPer))
+        if (d.includes(revPer)){
+          return "green";
+        }
+        else{return "blue"}
+
+
+
+      }else{return "blue"}
+
+
+
+    }
+
+    var drawRevDesk = function(state, data){
+        // console.log("state", state)
+        revPer = dataToRevDesk(data);
+        var svgwidth = 500;
+        var svgheight = 350;
+        var svg = d3.select('body').select('.desk').select('svg').attr('width',svgwidth).attr('height',svgheight);
+        var margins =
+        {
+          top:20,
+          bottom:60,
+          left:50,
+          right:50
+        }
+        var width = svgwidth -margins.left - margins.right;
+        var height = svgheight -margins.top - margins.bottom;
+        var barWidth=width/10-1;
+        var yScale = d3.scaleLinear()
+                       .domain([0,50])
+                       .range([height,0]);
+
+        var xScale = d3.scaleLinear()
+                       .domain(d3.extent(revPer))
+                       .nice()
+                       .range([0,width]);
+
+        var binMaker = d3.histogram()
+                         .domain(xScale.domain())
+                         .thresholds(xScale.ticks(10));
+
+        var bins = binMaker(revPer);
+        // console.log(bins);
+
+        var percentage = function(d){
+          return d.length/revPer.length;
+        }
+
+        var yScale = d3.scaleLinear()
+                       .domain([0,d3.max(bins,function(d){
+                         // console.log("d", percentage(d))
+                         return percentage(d);})])
+                       .range([height,0])
+                       .nice();
+
+        var plot = svg.append('g').classed('plot',true)
+                .attr('transform','translate('+margins.left+","+margins.top+")");
+
+
+
+        var yAxis = d3.axisLeft(yScale);
+        svg.append('g').classed('yScale',true)
+           .call(yAxis)
+           .attr('transform','translate('+(margins.left)+","+margins.top+')');
+
+        function make_y_gridlines() {
+               return d3.axisLeft(yScale)
+                   .ticks(5)
+        }
+
+        var yAxislines = plot.append('g').classed('grid',true)
+              .call(make_y_gridlines().tickSize(-width-50).tickFormat(""))
+              .attr("transform", "translate("+(0)+","+(0)+")");
+
+
+        plot.selectAll("rect")
+                  .data(bins)
+                  .enter()
+                  .append("rect")
+                  .attr("x", function(d){
+                    return xScale(d.x0)+3;})
+                  .attr("width", barWidth)
+                  .attr("y", function(d){return yScale(percentage(d));})
+                  .attr("height", function(d){return height - yScale(percentage(d));})
+                  .attr("fill", function(d){
+                    // console.log("big d", d)
+                    return checkColorDesk(d, state, data);
+                  })
+
+        var xAxis = d3.axisBottom(xScale);
+              svg.append("g").classed("xAxis", true)
+              .call(xAxis)
+              .attr("transform", "translate("+(margins.left+barWidth/2)+","+(margins.top+height+15)+")");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+            .text("Percent of States");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+            .text("Revenue/User (Tablet & Desktop)");
+    }
+
+    var dataToRevDesk = function(d){
+      dist = []
+      for(var key in d) {
+        var value = d[key];
+        var revenue = value[10]
+        revenue = revenue.replace("$", "")
+        revenue = revenue.replace(",", "")
+        var users = value[9]
+        users = users.replace(",", "")
+        // console.log("rev:", revenue, "users:", users)
+        var revPer = revenue / users;
+        dist.push(revPer)
+    }
+    // console.log(dist)
+    return dist;}
+
+    var checkColorDesk = function(d, state, data){
+      // console.log("d", d, "state", state, "data", data)
+      if (state != 0){
+        var name = state.properties.name;
+        var value = data[name];
+        var rev = value[10];
+        rev = rev.replace("$", "")
+        rev = rev.replace(",", "")
+        var user = value[9];
+        user = user.replace(",", "")
+        revPer = rev / user;
+        // console.log("d[0]", d, "revPer", revPer)
+        // console.log("RevPERERE", d.includes(revPer))
+        if (d.includes(revPer)){
+          return "green";
+        }
+        else{return "blue"}
+
+
+
+      }else{return "blue"}
+
+
+
     }

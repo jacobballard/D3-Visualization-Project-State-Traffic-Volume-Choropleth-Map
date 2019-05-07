@@ -4,13 +4,49 @@
     <meta charset="utf-8">
     <title>Cause Visualization</title>
   </head>
+  <style>
+    #tooltipT0, #tooltipT01, #tooltipT1, #tooltipT2, #tooltipT3 {
+      font-weight:bold;
+    }
+    .graphs {
+      width: 400px;
+      height: 1000px;
+      float:right;
+      position: relative;
+
+      margin-right: 10%;
+    }
+    .desk{
+      padding-top: 40px;
+      width: 400px;
+      height: 275px;
+    }
+    .mob{
+      padding-top: 40px;
+      width: 400px;
+      height: 275px;
+    }
+    .tot{
+    width: 400px;
+    height: 275px;
+    }
+
+
+
+  </style>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="javaScript.js" type="text/javascript"></script>
   <body>
-    <h1 align="middle">Final Project</h1>
 
     <svg></svg>
-    <div align="right"><svg></svg></div>
+    <div class="graphs">
+
+    <div class="tot">
+      <svg>
+
+      </svg>
+    </div><
+    <div class="mob"><svg></svg></div><div class="desk"><svg></svg></div></div>
   </body>
 </html>
