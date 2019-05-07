@@ -218,7 +218,7 @@ var drawRevPer = function(state, data){
         .attr("text-anchor", "middle")  // found on bl.ocks.org
         .attr("transform", "translate("+ ((width/2)+ 110) +","+(height+75)+")")
         .classed("graphLabels", true)
-        .text("Revenue/User");
+        .text("Revenue/User (All)");
 }
 
 
@@ -291,12 +291,12 @@ var states = svg.append("g")
                  .attr("id","tooltip")
                  .attr("x",mouseX)
                  .attr("y",mouseY)
-                 .attr("width",275)
+                 .attr("width",340)
                  .attr("height",125)
                  .style("fill","#EDF0EC")
              svg.append('g').append('text')
                 .attr("id","tooltipT01")
-                .attr("x",mouseX+137.5 - 12.5 * (d.properties.name.length/2))
+                .attr("x",mouseX+137.5 - 2 * (d.properties.name.length/2))
                 .attr("y",mouseY+25)
                 .text(d.properties.name)
                 .attr("font-size","20px")
@@ -322,7 +322,13 @@ var states = svg.append("g")
                 .attr("id","tooltipT3")
                 .attr("x",mouseX+165)
                 .attr("y",mouseY+50)
-                .text("Conversion Rate")
+                .text("Conversions")
+                .attr("font-size","15px")
+            svg.append('g').append('text')
+                .attr("id","tooltipT20")
+                .attr("x",mouseX+250)
+                .attr("y",mouseY+50)
+                .text("Revenue/User")
                 .attr("font-size","15px")
             svg.append('g').append('text')
                 .attr("id","tooltipT4")
@@ -349,6 +355,22 @@ var states = svg.append("g")
                 .text(data[d.properties.name][3])
                 .attr("font-size","12px")
             svg.append('g').append('text')
+                .attr("id","tooltipT21")
+                .attr("x",mouseX+250)
+                .attr("y",mouseY+70)
+                .text(function(k){
+                  use = data[d.properties.name][1]
+                  rev = data[d.properties.name][2] //2/1
+                  rev = rev.replace("$", "")
+                  rev = rev.replace(",", "")
+                  use = use.replace(",", "")
+                  rat = rev/use;
+                  num = rat.toString();
+                  num = num.substring(0, 4)
+                  return ("$" + num);
+                })
+                .attr("font-size","12px")
+            svg.append('g').append('text')
                 .attr("id","tooltipT8")
                 .attr("x",mouseX+5)
                 .attr("y",mouseY+90)
@@ -372,6 +394,22 @@ var states = svg.append("g")
                 .attr("y",mouseY+90)
                 .text(data[d.properties.name][7])
                 .attr("font-size","12px")
+            svg.append('g').append('text')
+                .attr("id","tooltipT22")
+                .attr("x",mouseX+250)
+                .attr("y",mouseY+90)
+                .text(function(k){
+                  use = data[d.properties.name][5]
+                  rev = data[d.properties.name][6] //2/1
+                  rev = rev.replace("$", "")
+                  rev = rev.replace(",", "")
+                  use = use.replace(",", "")
+                  rat = rev/use;
+                  num = rat.toString();
+                  num = num.substring(0, 4)
+                  return ("$" + num);
+                })
+                    .attr("font-size","12px")
             svg.append('g').append('text')
                 .attr("id","tooltipT12")
                 .attr("x",mouseX+5)
@@ -402,6 +440,22 @@ var states = svg.append("g")
                 .attr("y",mouseY+110)
                 .text(data[d.properties.name][11])
                 .attr("font-size","12px")
+            svg.append('g').append('text')
+                .attr("id","tooltipT23")
+                .attr("x",mouseX+250)
+                .attr("y",mouseY+110)
+                .text(function(k){
+                  use = data[d.properties.name][9]
+                  rev = data[d.properties.name][10] //2/1
+                  rev = rev.replace("$", "")
+                  rev = rev.replace(",", "")
+                  use = use.replace(",", "")
+                  rat = rev/use;
+                  num = rat.toString();
+                  num = num.substring(0, 4)
+                  return ("$" + num);
+                })
+                    .attr("font-size","12px")
             })
 
             .on("mouseout",function(d){
@@ -428,6 +482,10 @@ var states = svg.append("g")
               d3.select("#tooltipT15").remove()
               d3.select("#tooltipT16").remove()
               d3.select("#tooltipT01").remove()
+              d3.select("#tooltipT20").remove()
+              d3.select("#tooltipT21").remove()
+              d3.select("#tooltipT22").remove()
+              d3.select("#tooltipT23").remove()
             })
           .on("click", function(d){return clicked(d, data);})
 
