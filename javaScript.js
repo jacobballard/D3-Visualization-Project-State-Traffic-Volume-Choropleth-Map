@@ -75,7 +75,7 @@ return allUsersConv;
 }
 
 var clicked = function(state, data) {
-
+  // console.log("state", state)
   drawRevPer(state, data);
 
 }
@@ -85,26 +85,138 @@ var dataToRevPer = function(d){
   for(var key in d) {
     var value = d[key];
     var revenue = value[2]
+    revenue = revenue.replace("$", "")
+    revenue = revenue.replace(",", "")
     var users = value[1]
+    users = users.replace(",", "")
+    // console.log("rev:", revenue, "users:", users)
     var revPer = revenue / users;
     dist.push(revPer)
-
-  // do something with "key" and "value" variables
-
 }
-return dist
+// console.log(dist)
+return dist;}
+
+var checkColor = function(d, state, data){
+  // console.log("d", d, "state", state, "data", data)
+  if (state != 0){
+    var name = state.properties.name;
+    var value = data[name];
+    var rev = value[2];
+    rev = rev.replace("$", "")
+    rev = rev.replace(",", "")
+    var user = value[1];
+    user = user.replace(",", "")
+    revPer = rev / user;
+    // console.log("d[0]", d, "revPer", revPer)
+    // console.log("RevPERERE", d.includes(revPer))
+    if (d.includes(revPer)){
+      return "green";
+    }
+    else{return "blue"}
+
+
+
+  }else{return "blue"}
+
+
+
 }
 
 var drawRevPer = function(state, data){
+    // console.log("state", state)
     revPer = dataToRevPer(data);
+    var svgwidth = 400;
+    var svgheight = 300;
+    var svg = d3.select('body').select('div').select('svg').attr('width',svgwidth).attr('height',svgheight);
+    var margins =
+    {
+      top:20,
+      bottom:60,
+      left:50,
+      right:50
+    }
+    var width = svgwidth -margins.left - margins.right;
+    var height = svgheight -margins.top - margins.bottom;
+    var barWidth=width/10-1;
+    var yScale = d3.scaleLinear()
+                   .domain([0,50])
+                   .range([height,0]);
 
-  if (state == 0){
+    var xScale = d3.scaleLinear()
+                   .domain(d3.extent(revPer))
+                   .nice()
+                   .range([0,width]);
 
-  }else{
+    var binMaker = d3.histogram()
+                     .domain(xScale.domain())
+                     .thresholds(xScale.ticks(10));
 
-  }
+    var bins = binMaker(revPer);
+    // console.log(bins);
 
+    var percentage = function(d){
+      return d.length/revPer.length;
+    }
+
+    var yScale = d3.scaleLinear()
+                   .domain([0,d3.max(bins,function(d){
+                     // console.log("d", percentage(d))
+                     return percentage(d);})])
+                   .range([height,0])
+                   .nice();
+
+    var plot = svg.append('g').classed('plot',true)
+            .attr('transform','translate('+margins.left+","+margins.top+")");
+
+
+
+    var yAxis = d3.axisLeft(yScale);
+    svg.append('g').classed('yScale',true)
+       .call(yAxis)
+       .attr('transform','translate('+(margins.left)+","+margins.top+')');
+
+    function make_y_gridlines() {
+           return d3.axisLeft(yScale)
+               .ticks(5)
+    }
+
+    var yAxislines = plot.append('g').classed('grid',true)
+          .call(make_y_gridlines().tickSize(-width-50).tickFormat(""))
+          .attr("transform", "translate("+(0)+","+(0)+")");
+
+
+    plot.selectAll("rect")
+              .data(bins)
+              .enter()
+              .append("rect")
+              .attr("x", function(d){
+                return xScale(d.x0)+3;})
+              .attr("width", barWidth)
+              .attr("y", function(d){return yScale(percentage(d));})
+              .attr("height", function(d){return height - yScale(percentage(d));})
+              .attr("fill", function(d){
+                // console.log("big d", d)
+                return checkColor(d, state, data);
+              })
+
+    var xAxis = d3.axisBottom(xScale);
+          svg.append("g").classed("xAxis", true)
+          .call(xAxis)
+          .attr("transform", "translate("+(margins.left+barWidth/2)+","+(margins.top+height+15)+")");
+
+    svg.append("text")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+        .text("Percent of States");
+
+    svg.append("text")
+        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+        .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+        .text("Revenue/User");
 }
+
+
+
 
 var color = function(name, data){
 
@@ -341,4 +453,98 @@ var states = svg.append("g")
                          .attr("y",function(d,i){return 25+30*i;})
                          .text(function(d){return d})
 
+    }
+
+
+    var draw = function(state, data){
+        // console.log("state", state)
+        revPer = dataToRevPer(data);
+        var svgwidth = 400;
+        var svgheight = 300;
+        var svg = d3.select('body').select('div').select('svg').attr('width',svgwidth).attr('height',svgheight);
+        var margins =
+        {
+          top:20,
+          bottom:60,
+          left:50,
+          right:50
+        }
+        var width = svgwidth -margins.left - margins.right;
+        var height = svgheight -margins.top - margins.bottom;
+        var barWidth=width/10-1;
+        var yScale = d3.scaleLinear()
+                       .domain([0,50])
+                       .range([height,0]);
+
+        var xScale = d3.scaleLinear()
+                       .domain(d3.extent(revPer))
+                       .nice()
+                       .range([0,width]);
+
+        var binMaker = d3.histogram()
+                         .domain(xScale.domain())
+                         .thresholds(xScale.ticks(10));
+
+        var bins = binMaker(revPer);
+        // console.log(bins);
+
+        var percentage = function(d){
+          return d.length/revPer.length;
+        }
+
+        var yScale = d3.scaleLinear()
+                       .domain([0,d3.max(bins,function(d){
+                         // console.log("d", percentage(d))
+                         return percentage(d);})])
+                       .range([height,0])
+                       .nice();
+
+        var plot = svg.append('g').classed('plot',true)
+                .attr('transform','translate('+margins.left+","+margins.top+")");
+
+
+
+        var yAxis = d3.axisLeft(yScale);
+        svg.append('g').classed('yScale',true)
+           .call(yAxis)
+           .attr('transform','translate('+(margins.left)+","+margins.top+')');
+
+        function make_y_gridlines() {
+               return d3.axisLeft(yScale)
+                   .ticks(5)
+        }
+
+        var yAxislines = plot.append('g').classed('grid',true)
+              .call(make_y_gridlines().tickSize(-width-50).tickFormat(""))
+              .attr("transform", "translate("+(0)+","+(0)+")");
+
+
+        plot.selectAll("rect")
+                  .data(bins)
+                  .enter()
+                  .append("rect")
+                  .attr("x", function(d){
+                    return xScale(d.x0)+3;})
+                  .attr("width", barWidth)
+                  .attr("y", function(d){return yScale(percentage(d));})
+                  .attr("height", function(d){return height - yScale(percentage(d));})
+                  .attr("fill", function(d){
+                    // console.log("big d", d)
+                    return checkColor(d, state, data);
+                  })
+
+        var xAxis = d3.axisBottom(xScale);
+              svg.append("g").classed("xAxis", true)
+              .call(xAxis)
+              .attr("transform", "translate("+(margins.left+barWidth/2)+","+(margins.top+height+15)+")");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+            .text("Percent of States");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+            .text("Revenue/User");
     }
