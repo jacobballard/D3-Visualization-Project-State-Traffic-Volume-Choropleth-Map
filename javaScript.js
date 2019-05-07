@@ -250,7 +250,7 @@ var color = function(name, data){
 
 var drawMap = function(map, data){
 
-var width = 1200;
+var width = 1300;
 var height = 800;
 
 var svg = d3.select("svg")
