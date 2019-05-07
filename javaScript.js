@@ -136,7 +136,7 @@ var drawRevPer = function(state, data){
     {
       top:20,
       bottom:60,
-      left:50,
+      left:75,
       right:50
     }
     var width = svgwidth -margins.left - margins.right;
@@ -210,12 +210,14 @@ var drawRevPer = function(state, data){
 
     svg.append("text")
         .attr("text-anchor", "middle")
-        .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+        .attr("transform", "translate(" + 30 +","+((height/2) + 25) +")rotate(-90)")
+        .classed("graphLabels", true)
         .text("Percent of States");
 
     svg.append("text")
-        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-        .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+        .attr("text-anchor", "middle")  // found on bl.ocks.org
+        .attr("transform", "translate("+ ((width/2)+ 110) +","+(height+75)+")")
+        .classed("graphLabels", true)
         .text("Revenue/User");
 }
 
@@ -464,7 +466,7 @@ var states = svg.append("g")
         {
           top:20,
           bottom:60,
-          left:50,
+          left:75,
           right:50
         }
         var width = svgwidth -margins.left - margins.right;
@@ -538,12 +540,14 @@ var states = svg.append("g")
 
         svg.append("text")
             .attr("text-anchor", "middle")
-            .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+            .attr("transform", "translate(" + 30 +","+((height/2) + 25) +")rotate(-90)")
+            .classed("graphLabels", true)
             .text("Percent of States");
 
         svg.append("text")
-            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-            .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+            .attr("text-anchor", "middle")  // found on bl.ocks.org
+            .attr("transform", "translate("+ ((width/2)+ 110) +","+(height+75)+")")
+            .classed("graphLabels", true)
             .text("Revenue/User (Mobile)");
     }
 
@@ -599,7 +603,7 @@ var states = svg.append("g")
         {
           top:20,
           bottom:60,
-          left:50,
+          left:75,
           right:50
         }
         var width = svgwidth -margins.left - margins.right;
@@ -673,12 +677,14 @@ var states = svg.append("g")
 
         svg.append("text")
             .attr("text-anchor", "middle")
-            .attr("transform", "translate(" + 10 +","+((height/2) + 25) +")rotate(-90)")
+            .attr("transform", "translate(" + 30 +","+((height/2) + 25) +")rotate(-90)")
+            .classed("graphLabels", true)
             .text("Percent of States");
 
         svg.append("text")
-            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-            .attr("transform", "translate("+ ((width/2)+ 70) +","+(height+75)+")")  // centre below axis
+            .attr("text-anchor", "middle")  //found on bl.ocks.org
+            .attr("transform", "translate("+ ((width/2)+ 110) +","+(height+75)+")")
+            .classed("graphLabels", true)
             .text("Revenue/User (Tablet & Desktop)");
     }
 
